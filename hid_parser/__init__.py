@@ -766,19 +766,11 @@ class ReportDescriptor():
             )
             self._append_item(offset_list, pool, report_id, item)
         else:
-            if len(usages) != report_count:
-                error_str = f'Expecting {report_count} usages but got {len(usages)}'
-                if len(usages) == 1:
-                    warnings.warn(HIDComplianceWarning(error_str))
-                    usages *= report_count
-                else:
-                    raise InvalidReportDescriptor(error_str)
-
-            for usage in usages:
+            for r in range(0, report_count):
                 item = VariableItem(
                     offset=offset_list[report_id],
                     size=report_size,
-                    usage=usage,
+                    usage=usages[min(r, len(usages) - 1)],
                     flags=flags,
                     **data,
                 )
